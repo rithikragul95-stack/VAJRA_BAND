@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAJRA BAND - Edge AI Smartwatch Simulator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <header class="app-header">
+        <div class="logo">
+            <span class="logo-shield"><i class="fa-solid fa-shield-halved"></i></span>
+            <div class="logo-text">
+                <h1>VAJRA BAND</h1>
+                <p>Compact Edge AI Smartwatch Platform</p>
+            </div>
+        </div>
+        <div class="system-status-indicator">
+            <span class="status-dot online"></span>
+            <span class="status-label">Edge AI Model: C++ Core (Active)</span>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        
+        <!-- LEFT PANEL: THE SMARTWATCH HARDWARE SIMULATOR -->
+        <section class="panel watch-panel">
+            <div class="watch-container">
+                <!-- Smartwatch Chassis -->
+                <div class="watch-case">
+                    <div class="watch-bezel">
+                        <div class="watch-screen" id="watchScreen">
+                            
+                            <!-- Watch Face: Normal Status -->
+                            <div class="watch-face" id="watchFaceMain">
+                                <div class="watch-header">
+                                    <span class="watch-time" id="watchTime">12:34</span>
+                                    <span class="watch-battery" id="watchBatteryContainer"><i class="fa-solid fa-battery-three-quarters" id="watchBatteryIcon"></i> <span id="watchBatteryValue">87%</span></span>
+                                </div>
+
+                                <div class="status-badge-container">
+                                    <div class="status-badge" id="watchStatusBadge">
+                                        <i class="fa-solid fa-heart-pulse icon-normal" id="statusIcon"></i>
+                                        <span id="watchStatusText">NORMAL</span>
+                                    </div>
+                                </div>
+
+                                <div class="watch-vitals-row">
+                                    <div class="watch-vital-box hr-box">
+                                        <span class="vital-label">HEART RATE</span>
+                                        <div class="vital-val-container">
+                                            <i class="fa-solid fa-heart pulse-heart" id="watchHeartIcon"></i>
+                                            <span class="vital-value" id="watchHR">72</span>
+                                            <span class="vital-unit">bpm</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="watch-vital-box spo2-box">
+                                        <span class="vital-label">OXYGEN (SpO₂)</span>
+                                        <div class="vital-val-container">
+                                            <i class="fa-solid fa-wind" id="watchWindIcon"></i>
+                                            <span class="vital-value" id="watchSpO2">98</span>
+                                            <span class="vital-unit">%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="watch-vital-box temp-box">
+                                        <span class="vital-label">BODY TEMP</span>
+                                        <div class="vital-val-container">
+                                            <i class="fa-solid fa-temperature-high"></i>
+                                            <span class="vital-value" id="watchTemp">36.8</span>
+                                            <span class="vital-unit">°C</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="watch-activity-row">
+                                    <div class="activity-stat">
+                                        <i class="fa-solid fa-shoe-prints"></i>
+                                        <span id="watchSteps">4,382</span>
+                                    </div>
+                                    <div class="activity-stat" id="watchSleepIndicator">
+                                        <i class="fa-solid fa-moon"></i>
+                                        <span>AWAKE</span>
+                                    </div>
+                                </div>
+
+                                <div class="watch-recommendation">
+                                    <div class="scrolling-text-container">
+                                        <p id="watchRecommendationText">Vitals normal. Smartwatch monitoring active.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Watch Face: Critical Countdown Overlay -->
+                            <div class="watch-face-overlay hidden" id="watchCountdownOverlay">
+                                <div class="countdown-warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <h3>CRITICAL ALERT</h3>
+                                <p id="countdownReason">Incident Detected</p>
+                                <div class="countdown-circle">
+                                    <span id="countdownNumber">5</span>
+                                </div>
+                                <p class="countdown-sub">Alerting in 5s...</p>
+                                <button class="btn btn-cancel-alert" id="btnCancelAlert">CANCEL</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Watch Side Button -->
+                    <div class="watch-button" id="watchSideBtn"></div>
+                    <div class="watch-sensor-hub"></div>
+                </div>
+            </div>
+            
+            <div class="device-specs">
+                <h3>Hardware Simulation Layer</h3>
+                <ul>
+                    <li><span class="spec-label">MCU:</span> ESP32 (Edge AI on-device)</li>
+                    <li><span class="spec-label">RAM:</span> 32KB Static Cache</li>
+                    <li><span class="spec-label">Sensors:</span> MAX30102 (PPG), MPU6050 (6-Axis IMU)</li>
+                    <li><span class="spec-label">Comms:</span> Built-in eSIM (LTE-M/GPS)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: INTERACTIVE SENSORS CONTROLLER & DATA GENERATOR -->
+        <section class="panel control-panel">
+            <div class="panel-header">
+                <h2><i class="fa-solid fa-sliders"></i> Sensor & State Control Center</h2>
+                <p>Simulate patient vitals manually or load pre-configured scenarios to test the rule-based Edge AI engine.</p>
+            </div>
+
+            <!-- Pre-configured Health Scenarios -->
+            <div class="control-group">
+                <h3><i class="fa-solid fa-briefcase-medical"></i> Select Scenario Preset</h3>
+                <div class="presets-grid">
+                    <button class="btn btn-preset active" data-preset="normal">
+                        <i class="fa-solid fa-face-smile"></i>
+                        <span>Normal Resting</span>
+                    </button>
+                    <button class="btn btn-preset" data-preset="workout">
+                        <i class="fa-solid fa-person-running"></i>
+                        <span>Cardio Workout</span>
+                    </button>
+                    <button class="btn btn-preset" data-preset="sleep">
+                        <i class="fa-solid fa-bed"></i>
+                        <span>Sleep Mode</span>
+                    </button>
+                    <button class="btn btn-preset" data-preset="hypoxia">
+                        <i class="fa-solid fa-lungs-virus"></i>
+                        <span>Sleep Apnea</span>
+                    </button>
+                    <button class="btn btn-preset" data-preset="panic">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Panic Attack</span>
+                    </button>
+                    <button class="btn btn-preset" data-preset="fever">
+                        <i class="fa-solid fa-temperature-high"></i>
+                        <span>Fever</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Manual Vitals Tuning Sliders -->
+            <div class="control-group">
+                <h3><i class="fa-solid fa-heart-pulse"></i> Manual Vital Sensors</h3>
+                
+                <div class="slider-row">
+                    <div class="slider-info">
+                        <span class="slider-label">Heart Rate (HR)</span>
+                        <span class="slider-value-display"><strong id="valHR">72</strong> bpm</span>
+                    </div>
+                    <input type="range" id="inputHR" min="30" max="200" value="72" class="slider-input">
+                    <div class="slider-limits"><span>30 bpm (Bradycardia)</span> <span>200 bpm (Tachycardia)</span></div>
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-info">
+                        <span class="slider-label">Oxygen Saturation (SpO₂)</span>
+                        <span class="slider-value-display"><strong id="valSpO2">98</strong> %</span>
+                    </div>
+                    <input type="range" id="inputSpO2" min="70" max="100" value="98" class="slider-input">
+                    <div class="slider-limits"><span>70% (Severe Hypoxia)</span> <span>100% (Healthy)</span></div>
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-info">
+                        <span class="slider-label">Body Temperature (TEMP)</span>
+                        <span class="slider-value-display"><strong id="valTemp">36.8</strong> °C</span>
+                    </div>
+                    <input type="range" id="inputTemp" min="34" max="40" step="0.1" value="36.8" class="slider-input">
+                    <div class="slider-limits"><span>34°C (Hypothermia)</span> <span>40°C (High Fever)</span></div>
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-info">
+                        <span class="slider-label">Battery Level</span>
+                        <span class="slider-value-display"><strong id="valBattery">87</strong> %</span>
+                    </div>
+                    <input type="range" id="inputBattery" min="0" max="100" value="87" class="slider-input">
+                    <div class="slider-limits"><span>0% (Empty)</span> <span>100% (Full)</span></div>
+                </div>
+
+                <div class="sensor-toggle-row">
+                    <div class="toggle-card">
+                        <div class="toggle-info">
+                            <span class="toggle-title">Sleep Mode Status</span>
+                            <span class="toggle-desc">Saves power & modifies AI filters</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="inputSleep">
+                            <span class="slider-switch round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motion & Accident Simulation -->
+            <div class="control-group">
+                <h3><i class="fa-solid fa-person-falling-burst"></i> Motion & Accident Sensors</h3>
+                
+                <div class="slider-row" id="motionSliderContainer">
+                    <div class="slider-info">
+                        <span class="slider-label">Motion Intensity (Accelerometer)</span>
+                        <span class="slider-value-display"><strong id="valMotion">1.0</strong> G</span>
+                    </div>
+                    <input type="range" id="inputMotion" min="0" max="5" step="0.1" value="1.0" class="slider-input">
+                    <div class="slider-limits"><span>0.0G (No Movement)</span> <span>5.0G (High Impact)</span></div>
+                    <div class="sleep-overlay-msg hidden" id="sleepMotionDisabledMsg">
+                        <i class="fa-solid fa-power-off"></i> Motion Sensor Disabled (Sleep Mode Power Saving)
+                    </div>
+                </div>
+
+                <div class="action-buttons-row">
+                    <button class="btn btn-action btn-danger-action" id="btnTriggerFall">
+                        <i class="fa-solid fa-person-falling"></i> Trigger Sudden Fall Accident
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- BOTTOM ROW: REAL-TIME CHARTS & LIVE CODE DEBUGGER -->
+    <section class="bottom-panel-container">
+        
+        <!-- CHART PANEL (DATA FILTERING VISUALIZATION) -->
+        <div class="panel chart-panel">
+            <div class="panel-header">
+                <h3><i class="fa-solid fa-chart-line"></i> Data Filtering & Trend Extraction</h3>
+                <p>Comparing raw sensor outputs (noisy/spikes) against the C++ Edge AI's Moving Average Filters.</p>
+            </div>
+            
+            <div class="charts-row">
+                <!-- HR CHART -->
+                <div class="chart-box">
+                    <div class="chart-title-row">
+                        <h4>Heart Rate Smoothing</h4>
+                        <div class="chart-legend">
+                            <span class="legend-item raw"><span class="legend-dot"></span>Raw</span>
+                            <span class="legend-item filtered"><span class="legend-dot"></span>Filtered</span>
+                        </div>
+                    </div>
+                    <div class="svg-chart-container">
+                        <svg id="hrChart" class="realtime-svg-chart" viewBox="0 0 400 150">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="30" x2="400" y2="30" class="grid-line" />
+                            <line x1="0" y1="75" x2="400" y2="75" class="grid-line" />
+                            <line x1="0" y1="120" x2="400" y2="120" class="grid-line" />
+                            
+                            <!-- Graph paths -->
+                            <path id="pathRawHR" class="path-raw" d="M 0,75" />
+                            <path id="pathFilteredHR" class="path-filtered" d="M 0,75" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- SPO2 CHART -->
+                <div class="chart-box">
+                    <div class="chart-title-row">
+                        <h4>Oxygen Level (SpO₂) Smoothing</h4>
+                        <div class="chart-legend">
+                            <span class="legend-item raw"><span class="legend-dot"></span>Raw</span>
+                            <span class="legend-item filtered"><span class="legend-dot"></span>Filtered (Avg)</span>
+                        </div>
+                    </div>
+                    <div class="svg-chart-container">
+                        <svg id="spo2Chart" class="realtime-svg-chart" viewBox="0 0 400 150">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="30" x2="400" y2="30" class="grid-line" />
+                            <line x1="0" y1="75" x2="400" y2="75" class="grid-line" />
+                            <line x1="0" y1="120" x2="400" y2="120" class="grid-line" />
+                            
+                            <!-- Graph paths -->
+                            <path id="pathRawSpO2" class="path-raw" d="M 0,75" />
+                            <path id="pathFilteredSpO2" class="path-filtered-alt" d="M 0,75" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CODE INSPECTOR (INTELLIGENCE LAYER VISUALIZATION) -->
+        <div class="panel code-panel">
+            <div class="panel-header">
+                <h3><i class="fa-solid fa-code"></i> Edge AI Engine: Rules Inspector</h3>
+                <p>Real-time visual tracer highlighting C++ logic branches currently evaluating inside the watch.</p>
+            </div>
+            
+            <div class="code-container-wrapper">
+                <pre class="code-editor"><code id="cppCodeTracer">
+<span class="code-line" id="ml-header">// Generated via train_model.py (DecisionTreeClassifier, depth=5, ESP32)</span>
+<span class="code-line" id="ml-func-sig">inline HealthStatus predictRisk(const FilteredData& filtered, const VitalsData& rawData, float accMag) {</span>
+<span class="code-line" id="ml-node-1">    if (filtered.spo2 &lt;= 95.6952f) {</span>
+<span class="code-line" id="ml-node-2">        if (filtered.heartRate &lt;= 50.0073f) {</span>
+<span class="code-line" id="ml-node-3">            return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-4">        } else {</span>
+<span class="code-line" id="ml-node-5">            if (filtered.heartRate &lt;= 119.8295f) {</span>
+<span class="code-line" id="ml-node-6">                if (accMag &lt;= 2.5017f) {</span>
+<span class="code-line" id="ml-node-7">                    if (filtered.spo2 &lt;= 88.6360f) {</span>
+<span class="code-line" id="ml-node-8">                        return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-9">                    } else {</span>
+<span class="code-line" id="ml-node-10">                        return STATUS_WARNING;</span>
+<span class="code-line" id="ml-node-11">                } else {</span>
+<span class="code-line" id="ml-node-12">                    return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-13">            }</span>
+<span class="code-line" id="ml-node-14">        } else {</span>
+<span class="code-line" id="ml-node-15">            return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-16">    } else {</span>
+<span class="code-line" id="ml-node-17">        if (filtered.heartRate &lt;= 59.9965f) {</span>
+<span class="code-line" id="ml-node-18">            if (filtered.temperature &lt;= 35.9999f) {</span>
+<span class="code-line" id="ml-node-19">                return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-20">            } else {</span>
+<span class="code-line" id="ml-node-21">                return STATUS_WARNING;</span>
+<span class="code-line" id="ml-node-22">        } else {</span>
+<span class="code-line" id="ml-node-23">            if (accMag &lt;= 2.5095f) {</span>
+<span class="code-line" id="ml-node-24">                if (filtered.heartRate &lt;= 99.2675f) {</span>
+<span class="code-line" id="ml-node-25">                    if (filtered.temperature &lt;= 36.0634f) {</span>
+<span class="code-line" id="ml-node-26">                        return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-27">                    } else {</span>
+<span class="code-line" id="ml-node-28">                        return STATUS_NORMAL;</span>
+<span class="code-line" id="ml-node-29">                } else {</span>
+<span class="code-line" id="ml-node-30">                    return STATUS_WARNING;</span>
+<span class="code-line" id="ml-node-31">            } else {</span>
+<span class="code-line" id="ml-node-32">                return STATUS_CRITICAL;</span>
+<span class="code-line" id="ml-node-33">    }</span>
+<span class="code-line" id="ml-node-34">}</span>
+                </code></pre>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FULL SCREEN EMERGENCY cellular OVERLAY -->
+    <div class="emergency-overlay hidden" id="emergencyOverlay">
+        <div class="emergency-modal">
+            <div class="emergency-modal-header">
+                <div class="cellular-signal-glowing">
+                    <span class="signal-dot ring1"></span>
+                    <span class="signal-dot ring2"></span>
+                    <i class="fa-solid fa-tower-cell"></i>
+                </div>
+                <h2>VAJRA EMERGENCY SYSTEM ACTIVATED</h2>
+                <p>Vitals thresholds breached or accident detected. Cell dispatch network active.</p>
+            </div>
+
+            <div class="emergency-grid">
+                
+                <!-- PHONE CALL MOCKUP -->
+                <div class="em-card call-card">
+                    <div class="card-tag">simulated cellular call</div>
+                    <div class="caller-profile">
+                        <div class="caller-avatar">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3>Mom (Consented Contact)</h3>
+                        <p class="phone-number">+1 (555) 0199</p>
+                        <div class="call-status" id="callStatusText">CONNECTING VIA eSIM...</div>
+                    </div>
+                    
+                    <div class="dialer-animation">
+                        <div class="wave-circle wc1"></div>
+                        <div class="wave-circle wc2"></div>
+                        <i class="fa-solid fa-phone-volume call-phone-icon"></i>
+                    </div>
+
+                    <button class="btn btn-hangup" id="btnHangUpCall"><i class="fa-solid fa-phone-slash"></i> Terminate Emergency Call</button>
+                </div>
+
+                <!-- SMS & GPS MAP MOCKUP -->
+                <div class="em-card sms-card">
+                    <div class="card-tag">simulated gps sms</div>
+                    <div class="sms-preview">
+                        <div class="sms-bubble">
+                            <span class="sms-sender">VAJRA_BAND_WATCH</span>
+                            <div class="sms-content">
+                                <strong>[CRITICAL ALERT]</strong> Emergency condition detected!<br>
+                                <span class="sms-vital-log">
+                                    • Heart Rate: <span id="smsHR">134</span> bpm (CRITICAL)<br>
+                                    • Oxygen level: <span id="smsSpO2">85</span>% (HYPOXIA)<br>
+                                    • Fall Accident: <span id="smsFall">YES</span>
+                                </span>
+                                <hr class="sms-divider">
+                                <strong>GPS Location:</strong><br>
+                                Lat: <span id="smsLat">12.971600</span>, Lon: <span id="smsLon">77.594600</span><br>
+                                <a href="https://maps.google.com/?q=12.9716,77.5946" target="_blank" class="sms-map-link" id="smsMapLink">
+                                    <i class="fa-solid fa-map-location-dot"></i> Open real-time location in Maps
+                                </a>
+                            </div>
+                            <span class="sms-time" id="smsTime">12:35 PM</span>
+                        </div>
+                    </div>
+
+                    <!-- MOCK GPS MAP VIEW -->
+                    <div class="mock-map">
+                        <div class="map-grid-bg"></div>
+                        <div class="map-radar"></div>
+                        <div class="map-marker">
+                            <i class="fa-solid fa-circle-dot"></i>
+                            <div class="marker-pulse"></div>
+                            <span class="marker-label">VAJRA WATCH</span>
+                        </div>
+                        <div class="map-info-box">
+                            <i class="fa-solid fa-satellite"></i> GPS Position Locked (Acc: ±3m)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Script file -->
+    <script src="app.js"></script>
+</body>
+</html>
